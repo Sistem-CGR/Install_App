@@ -1,0 +1,42 @@
+.chicle{
+	display: inline-block;
+	text-shadow: 0 0 2 px #222,1px 1px  0 #450505;
+	animation: chicle 3s infinite;
+	transform-origin: center;
+}
+
+@keyframes chicle{
+	30% {
+	  transform: scaleX(0.85) scaleY(0.75);
+	}
+	50% {
+	  transform: scaleX(0.75) scaleY(0.85);
+	}
+	60% {
+	  transform: scaleX(0.85) scaleY(0.85);
+	}  
+}
+
+/*BURBUJAS*/
+.bubbles {
+	display: inline-block;
+	font-family: arial;
+	position: relative;
+	}
+	
+	.bubbles h1 {
+	position: relative;
+	margin: 1em 0 0;
+	font-family: 'Luckiest Guy', cursive;
+	color: dodgerblue;
+	z-index: 2;
+	}
+	
+	.individual-bubble {
+	position: absolute;
+	border-radius: 100%;
+	bottom: 10px;
+	background-color: lightskyblue;
+	z-index: 1;
+}
+

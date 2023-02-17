@@ -1,0 +1,12 @@
+.transparente{
+    background-color: transparent;
+  }
+
+  .Mayusculas{
+    text-transform: uppercase;
+  }
+
+  .modal-body {
+    height: 500px;
+    overflow-y: auto;
+  }

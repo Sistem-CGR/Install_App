@@ -1,0 +1,23 @@
+{
+  "name": "jsmodbuis-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon --watch index.js"
+  },
+  "author": "Fabian Ramos Huanico",
+  "license": "ISC",
+  "devDependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "jsmodbus": "^4.0.6"
+  }
+}
