@@ -10,8 +10,8 @@ services:
       # Creamos una base de datos
       MYSQL_DATABASE: "Telemetria"
       # Creamos un nuevo usuario u contraseña
-      MYSQL_USER: "Sistemas02"
-      MYSQL_PASSWORD: "Silver2671"
+      MYSQL_USER: "CGRTelemetria"
+      MYSQL_PASSWORD: "CGR_Silver2671"
     volumes:
       - /home/pi/Data:/var/lib/mysql
     ports:

@@ -16,10 +16,8 @@ sudo docker-compose -f docker-compose.yml up -d
 DB_HOST="127.0.0.1"
 DB_PORT=33060
 DB_NAME="Telemetria"
-DB_USER_NAME="Sistemas02"
-DB_PASSWORD_NAME="Silver2671"
-# Validamos tablas
-table_name="Dispositivos"
+DB_USER_NAME="CGRTelemetria"
+DB_PASSWORD_NAME="CGR_Silver2671"
 # Lista de tablas
 Dispositivo_Rasp="Dispositivo_Rasp"
 Dispositivos_PLC="Dispositivos_PLC"
@@ -99,5 +97,5 @@ sudo docker build -t app .
 sudo docker run --restart=always -d -p 83:8080 app
 cd ..
 #Mocemos el Proyecto
-sudo chmod 777 /var/www/html/
+#sudo chmod 777 /var/www/html/
 sudo cp -r Telemetria/ /var/www/html/Telemetria
