@@ -24,10 +24,10 @@ Table1="Dispositivo_Rasp"
 Table2="Dispositivos_PLC"
 Table3="Parametros"
 Table4="Data"
-table_exists_Table1=$(mysql -h $DB_HOST -P $DB_PORT -u $DB_USER_NAME -p $DB_PASSWORD_NAME -Nse "SELECT COUNT(*) FROM information_schema.tables WHERE table_name = '$Table1' AND table_schema = '$DB_NAME';")
-table_exists_Table2=$(mysql -h $DB_HOST -P $DB_PORT -u $DB_USER_NAME -p $DB_PASSWORD_NAME -Nse "SELECT COUNT(*) FROM information_schema.tables WHERE table_name = '$Table2' AND table_schema = '$DB_NAME';")
-table_exists_Table3=$(mysql -h $DB_HOST -P $DB_PORT -u $DB_USER_NAME -p $DB_PASSWORD_NAME -Nse "SELECT COUNT(*) FROM information_schema.tables WHERE table_name = '$Table3' AND table_schema = '$DB_NAME';")
-table_exists_Table4=$(mysql -h $DB_HOST -P $DB_PORT -u $DB_USER_NAME -p $DB_PASSWORD_NAME -Nse "SELECT COUNT(*) FROM information_schema.tables WHERE table_name = '$Table4' AND table_schema = '$DB_NAME';")
+table_exists_Table1=$(mysql -h $DB_HOST -P $DB_PORT -u $DB_USER_NAME -p$DB_PASSWORD_NAME -Nse "SELECT COUNT(*) FROM information_schema.tables WHERE table_name = '$Table1' AND table_schema = '$DB_NAME';")
+table_exists_Table2=$(mysql -h $DB_HOST -P $DB_PORT -u $DB_USER_NAME -p$DB_PASSWORD_NAME -Nse "SELECT COUNT(*) FROM information_schema.tables WHERE table_name = '$Table2' AND table_schema = '$DB_NAME';")
+table_exists_Table3=$(mysql -h $DB_HOST -P $DB_PORT -u $DB_USER_NAME -p$DB_PASSWORD_NAME -Nse "SELECT COUNT(*) FROM information_schema.tables WHERE table_name = '$Table3' AND table_schema = '$DB_NAME';")
+table_exists_Table4=$(mysql -h $DB_HOST -P $DB_PORT -u $DB_USER_NAME -p$DB_PASSWORD_NAME -Nse "SELECT COUNT(*) FROM information_schema.tables WHERE table_name = '$Table4' AND table_schema = '$DB_NAME';")
 
 echo $table_exists_Table1
 echo $table_exists_Table2
