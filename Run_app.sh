@@ -9,7 +9,7 @@ logo="
            CORPORATIVO GRUPO RIOS S.A. DE C.V.
 "
 echo "$logo"
-sudo mkdir /home/pi/Data
+#sudo mkdir /home/pi/Data
 cd services
 sudo docker-compose -f docker-compose.yml up -d
 #Declaracion de variables
