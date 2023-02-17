@@ -1,5 +1,8 @@
 // Purga de todas las imágenes, contenedores, volúmenes y redes sin usar o colgados
 
+sudo docker ps
+sudo docker stop 
+
 //  limpiará los recursos que estén colgados, esto es, no vinculados a un contenedor:
 sudo docker system prune
 

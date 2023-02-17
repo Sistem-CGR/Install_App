@@ -1,4 +1,4 @@
-version: '3'
+version: '3.1'
 services:
   Mysql:
     container_name: Mysql
@@ -10,10 +10,10 @@ services:
       # Creamos una base de datos
       MYSQL_DATABASE: "Telemetria"
       # Creamos un nuevo usuario u contraseña
-      MYSQL_USER: "CGRTelemetria"
-      MYSQL_PASSWORD: "CGR_Silver2671"
-    volumes:
-      - /home/pi/Data:/var/lib/mysql
+      MYSQL_USER: "Telemetria"
+      MYSQL_PASSWORD: "Silver2670T"
+    #volumes:
+    #  - /home/pi/Data:/var/lib/mysql
     ports:
     # Declaramos los puertos de host y el contenedor 
       - 33060:3306
