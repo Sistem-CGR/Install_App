@@ -33,4 +33,4 @@ sudo systemctl enable ddclient
 sudo systemctl start ddclient
 sudo apt autoremove -y
 #sudo ddclient -daemon=0 -debug -verbose -noquiet
-sudo shutdown -r now # &&  /home/pi/Install_IOT/Run_app.sh
+sudo shutdown -r now  &&  /home/pi/Install_IOT/Run_app.sh
