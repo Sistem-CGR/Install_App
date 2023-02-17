@@ -1,7 +1,7 @@
 // Purga de todas las imágenes, contenedores, volúmenes y redes sin usar o colgados
 
 sudo docker ps
-sudo docker stop 
+sudo docker stop
 
 //  limpiará los recursos que estén colgados, esto es, no vinculados a un contenedor:
 sudo docker system prune
@@ -17,8 +17,6 @@ sudo docker rmi image_name
 
 // Ip fija
 sudo nano /etc/dhcpcd.conf
-
-sudo rm -r /home/pi/Data/
 
 interface eth0
 static ip_address=192.168.8.101/24

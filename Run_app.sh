@@ -12,6 +12,7 @@ echo "$logo"
 #sudo mkdir /home/pi/Data
 cd services
 sudo docker-compose -f docker-compose.yml up -d
+sleep 20
 #Declaracion de variables
 DB_HOST="127.0.0.1"
 DB_PORT=33060
@@ -19,7 +20,7 @@ DB_NAME="Telemetria"
 DB_USER_NAME="Telemetria"
 DB_PASSWORD_NAME="Silver2670T"
 # Lista de tablas
-#=""
+
 Table1="Dispositivo_Rasp"
 Table2="Dispositivos_PLC"
 Table3="Parametros"
@@ -36,7 +37,7 @@ echo $table_exists_Table4
 
 if [[ $table_exists_Table1 == 0 ]]; then
   mysql -h $DB_HOST -P $DB_PORT -u $DB_USER_NAME -p$DB_PASSWORD_NAME $DB_NAME << EOF
-  CREATE TABLE $Table1 (
+  CREATE TABLE Dispositivo_Rasp (
     Id int AUTO_INCREMENT NOT NULL PRIMARY KEY,
     Usuario nvarchar(20) NOT NULL ,
     Contraseña nvarchar(20) NOT NULL ,
@@ -56,10 +57,10 @@ fi
 
 if [[ $table_exists_Table2 == 0 ]]; then
   mysql -h $DB_HOST -P $DB_PORT -u $DB_USER_NAME -p$DB_PASSWORD_NAME $DB_NAME << EOF
-   CREATE TABLE $Table2 (
+   CREATE TABLE Dispositivos_PLC (
     Id int AUTO_INCREMENT NOT NULL PRIMARY KEY,
     Id_Rasp int NOT NULL ,
-    foreign key (Id_Rasp) REFERENCES $Table1(Id),
+    foreign key (Id_Rasp) REFERENCES Dispositivo_Rasp(Id),
     Nombre nvarchar(50)  NOT NULL ,
     IP nvarchar(15) NOT NULL ,
     Puerto_PLC int NOT NULL ,
@@ -70,10 +71,10 @@ fi
 
 if [[ $table_exists_Table3 == 0 ]]; then
   mysql -h $DB_HOST -P $DB_PORT -u $DB_USER_NAME -p$DB_PASSWORD_NAME $DB_NAME << EOF
-   CREATE TABLE $Table3 (
+   CREATE TABLE Parametros (
     Id int AUTO_INCREMENT NOT NULL PRIMARY KEY,
     Id_PLC int  NOT NULL ,
-    foreign key (Id_PLC) REFERENCES $Table2(Id),
+    foreign key (Id_PLC) REFERENCES Dispositivos_PLC(Id),
     Nom_Variable nvarchar(15)  NOT NULL ,
     Tipo_Variable nvarchar(10)  NOT NULL ,
     Valor nvarchar(20)  NOT NULL ,
@@ -84,10 +85,10 @@ fi
 
 if [[ $table_exists_Table4 == 0 ]]; then
   mysql -h $DB_HOST -P $DB_PORT -u $DB_USER_NAME -p$DB_PASSWORD_NAME $DB_NAME << EOF
-  CREATE TABLE $Table4 (
+  CREATE TABLE Data (
     Id int AUTO_INCREMENT PRIMARY KEY,
     Id_Parametro int  NOT NULL ,
-    foreign key (Id_Parametro) REFERENCES $Table3(Id),
+    foreign key (Id_Parametro) REFERENCES Parametros(Id),
     Valor float  NOT NULL ,
     Alerta nvarchar(1)  NOT NULL ,
     Fecha datetime
