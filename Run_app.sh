@@ -44,6 +44,8 @@ if [[ $table_exists_Dispositivo_Rasp == 0 ]]; then
     Dominio nvarchar(100)  NOT NULL ,
     Latitud nvarchar(100)  NOT NULL ,
     Longitud nvarchar(100)  NOT NULL ,
+    API nvarchar(20)  NOT NULL ,
+    Puerto_API int  NOT NULL ,
     Descripcion nvarchar(500)  NOT NULL
   );
 EOF
@@ -58,8 +60,6 @@ if [[ $table_exists_Dispositivos_PLC == 0 ]]; then
     Nombre nvarchar(50)  NOT NULL ,
     IP nvarchar(15)  NOT NULL ,
     Puerto_PLC int  NOT NULL ,
-    API nvarchar(20)  NOT NULL ,
-    Puerto_API int  NOT NULL ,
     Descripcion nvarchar(500)  NOT NULL
   );
 EOF
