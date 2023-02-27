@@ -29,6 +29,6 @@ sudo echo 'raspberry.telemetriamorelos.com' >> /etc/ddclient.conf
 sudo chmod 644 /etc/ddclient.conf
 sudo systemctl enable ddclient
 sudo systemctl start ddclient
-sudo apt autoremove -y
+sudo apt-get autoremove -y
 #sudo ddclient -daemon=0 -debug -verbose -noquiet
-sudo shutdown -r now  #&&  /home/pi/Install_IOT/Run_app.sh
+#sudo shutdown -r now  #&&  /home/pi/Install_IOT/Run_app.sh

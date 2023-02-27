@@ -106,6 +106,6 @@ cd ..
 #Movemos el Proyecto
 sudo chmod 777 /var/www/html/
 cd /var/www/html/
-sudo rm -r *
+#sudo rm -r *
 cd /home/pi/Install_App/
 sudo mv Telemetria/* /var/www/html/
