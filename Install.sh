@@ -16,7 +16,7 @@ sudo apt-get install docker.io -y && sudo apt install docker-compose -y
 #Intstalacion de lamp
 sudo apt-get install apache2 -y && sudo apt install php -y && sudo apt install mariadb-server -y
 sudo chmod +x Run_app.sh
-sudo apt-get install libio-socket-ssl-perl -y && apt-get install ddclient -y
+sudo apt-get install libio-socket-ssl-perl -y && sudo apt-get install ddclient -y
 sudo chmod 777 /etc/ddclient.conf
 sudo echo 'daemon=3600' > /etc/ddclient.conf
 sudo echo 'protocol=dyndns2' >> /etc/ddclient.conf
