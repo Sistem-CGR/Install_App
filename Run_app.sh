@@ -12,28 +12,22 @@ echo "$logo"
 #sudo mkdir /home/pi/Data
 cd services
 sudo docker-compose -f docker-compose.yml up -d
-sleep 20
 #Declaracion de variables
 DB_HOST="127.0.0.1"
-DB_PORT=33060
+DB_PORT=3307
 DB_NAME="Telemetria"
 DB_USER_NAME="Telemetria"
 DB_PASSWORD_NAME="Silver2670T"
 # Lista de tablas
-
 Table1="Dispositivo_Rasp"
 Table2="Dispositivos_PLC"
 Table3="Parametros"
 Table4="Data"
+
 table_exists_Table1=$(mysql -h $DB_HOST -P $DB_PORT -u $DB_USER_NAME -p$DB_PASSWORD_NAME -Nse "SELECT COUNT(*) FROM information_schema.tables WHERE table_name = '$Table1' AND table_schema = '$DB_NAME';")
 table_exists_Table2=$(mysql -h $DB_HOST -P $DB_PORT -u $DB_USER_NAME -p$DB_PASSWORD_NAME -Nse "SELECT COUNT(*) FROM information_schema.tables WHERE table_name = '$Table2' AND table_schema = '$DB_NAME';")
 table_exists_Table3=$(mysql -h $DB_HOST -P $DB_PORT -u $DB_USER_NAME -p$DB_PASSWORD_NAME -Nse "SELECT COUNT(*) FROM information_schema.tables WHERE table_name = '$Table3' AND table_schema = '$DB_NAME';")
 table_exists_Table4=$(mysql -h $DB_HOST -P $DB_PORT -u $DB_USER_NAME -p$DB_PASSWORD_NAME -Nse "SELECT COUNT(*) FROM information_schema.tables WHERE table_name = '$Table4' AND table_schema = '$DB_NAME';")
-
-echo $table_exists_Table1
-echo $table_exists_Table2
-echo $table_exists_Table3
-echo $table_exists_Table4
 
 if [[ $table_exists_Table1 == 0 ]]; then
   mysql -h $DB_HOST -P $DB_PORT -u $DB_USER_NAME -p$DB_PASSWORD_NAME $DB_NAME << EOF
@@ -53,6 +47,10 @@ if [[ $table_exists_Table1 == 0 ]]; then
     Descripcion nvarchar(500) NULL
   );
 EOF
+  mysql -h $DB_HOST -P $DB_PORT -u $DB_USER_NAME -p$DB_PASSWORD_NAME $DB_NAME << EOF
+  insert into Dispositivo_Rasp (Usuario,Contraseña,Nombre,Modelo,Ram,Ssd,Dominio,Latitud,Longitud,Descripcion) 
+  values('pi','Silver2670','Raspberry_3_M1','B','2','16','raspberry.telemetriamorelos.com','18.9008352','99.0631825','pruebas');
+EOF
 fi
 
 if [[ $table_exists_Table2 == 0 ]]; then
@@ -66,6 +64,9 @@ if [[ $table_exists_Table2 == 0 ]]; then
     Puerto_PLC int NOT NULL ,
     Descripcion nvarchar(500) NOT NULL
   );
+EOF
+mysql -h $DB_HOST -P $DB_PORT -u $DB_USER_NAME -p$DB_PASSWORD_NAME $DB_NAME << EOF
+ INSERT INTO Dispositivos_PLC(Id_Rasp,Nombre,Ip,Puerto_PLC,Descripcion) values('1','Plc_1','192.168.1.50','502','');
 EOF
 fi
 
@@ -102,6 +103,9 @@ cd app
 sudo docker build -t app .
 sudo docker run --restart=always -d -p 83:8080 app
 cd ..
-#Mocemos el Proyecto
-#sudo chmod 777 /var/www/html/
-#sudo cp -r Telemetria/ /var/www/html/Telemetria
+#Movemos el Proyecto
+sudo chmod 777 /var/www/html/
+cd /var/www/html/
+sudo rm -r *
+cd /home/pi/Install_App/
+sudo mv Telemetria/* /var/www/html/

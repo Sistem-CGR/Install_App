@@ -1,11 +1,11 @@
-version: '3.1'
+version: '3.3'
 services:
   Mysql:
     container_name: Mysql
     image: mysql:8.0.32
     restart: always
     environment:
-     # Ingresamos una contraseña para el usuario root
+      # Ingresamos una contraseña para el usuario root
       MYSQL_ROOT_PASSWORD: "Silver2670/"
       # Creamos una base de datos
       MYSQL_DATABASE: "Telemetria"
@@ -15,8 +15,8 @@ services:
     #volumes:
     #  - /home/pi/Data:/var/lib/mysql
     ports:
-    # Declaramos los puertos de host y el contenedor 
-      - 33060:3306
+      # Declaramos los puertos de host y el contenedor 
+      - 3307:3306
     expose:
-    # Abrimos el puerto en el contenedor
+      # Abrimos el puerto en el contenedor
       - 3306

@@ -1,0 +1,29 @@
+1.- Instala la dependencia node-windows utilizando el siguiente comando:
+    npm install node-windows
+2.- Crear un archivo por ejemplo Servicio.js
+y para agregar el código que ara que el proyecto se ejecute como un servicio
+
+    2.2 Importamos la dependencia antes instalada
+        const Service = require('node-windows').Service;
+        const svc = new Service({
+        name:'Nombre del Servicio',
+        description: 'Descripción del Servicio',
+        script: 'C:\\ruta\\a\\tu\\archivo\\index.js' //Ruta del archivo
+        });
+
+        svc.on('install',function(){
+        svc.start();
+        });
+
+        svc.install();
+3.- Ejecuta el siguiente comando con permisos de administrador para instalar el servicio:
+
+node "Nombre del archivo que ejecutara el servicio" install
+
+4.-Una vez instalado, ejecuta el siguiente comando para iniciar el servicio:
+net start "Nombre del Servicio que ingresamos en el código"
+
+5.-Si necesitas detener o eliminar el servicio, puedes usar los siguientes comandos:
+
+net stop "Nombre del Servicio"
+node index.js uninstall
