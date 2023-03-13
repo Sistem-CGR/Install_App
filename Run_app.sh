@@ -28,14 +28,15 @@ Table4="Data"
 cd ..
 cd app
 sudo docker build -t app .
-sudo docker run --restart=always -d -p 83:8080 app
+sudo docker run --restart=always -d -p 83:8083 app
 cd ..
 #Movemos el Proyecto
-sudo chmod 777 /var/www/html/
-cd /var/www/html/
-sudo rm -r *
-cd /home/pi/Install_App/
-sudo mv Telemetria/* /var/www/html/
+
+#sudo chmod 777 /var/www/html/
+#cd /var/www/html/
+#sudo rm -r *
+#cd /home/pi/Install_App/
+#sudo mv Telemetria/* /var/www/html/
 
 table_exists_Table1=$(mysql -h $DB_HOST -P $DB_PORT -u $DB_USER_NAME -p$DB_PASSWORD_NAME -Nse "SELECT COUNT(*) FROM information_schema.tables WHERE table_name = '$Table1' AND table_schema = '$DB_NAME';")
 table_exists_Table2=$(mysql -h $DB_HOST -P $DB_PORT -u $DB_USER_NAME -p$DB_PASSWORD_NAME -Nse "SELECT COUNT(*) FROM information_schema.tables WHERE table_name = '$Table2' AND table_schema = '$DB_NAME';")

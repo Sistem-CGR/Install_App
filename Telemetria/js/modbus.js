@@ -1,12 +1,13 @@
-let api = "192.168.1.141:83";
+let api = "localhost:8083";
 //let api = "www.sistemaintegralrios.com:8083"
-//let api = "192.168.1.10:8083"
+//let api = "192.168.1.10:8083";
 
 let registros = 25;
 
 let init = () => {
   hora(0, 16);
   readCoils(6, 6);
+
   setInterval(() => {
     hora(0, 16);
     readCoils(6, 6);
@@ -96,7 +97,7 @@ var updateflujoChart = function (yVal, xVal) {
 
 var voltajesChart = new CanvasJS.Chart("voltajeChart", {
   exportEnabled: true,
-  title: { text: "Vooltajes" },
+  title: { text: "Voltajes" },
   data: [
     {
       type: "line",

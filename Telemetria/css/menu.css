@@ -1,155 +1,77 @@
-body{
-    font-family: BentonSansBBVA-Medium",Helvetica,Arial,sans-serif";
+:root {
+    --darkgreen: #005361;
+    --white: #fff;
 }
 
-.usuario{
-    font-weight: bold;
-    font-size: 10.5px;
-    font-family: BentonSansBBVA-Medium",Helvetica,Arial,sans-serif";
-    font-weight: 550;
-    padding: 1px;
-}
-.fa-circle{
-    font-size: 10.5px;
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }
 
-#navbarSupportedContent ul li a{
-    color: white;
-    font-weight: bold;
-    font-size: 15px;
-    font-family: BentonSansBBVA-Medium",Helvetica,Arial,sans-serif";
+body,
+.tabs-to-dropdown .dropdown-toggle,
+.tabs-to-dropdown .dropdown-item {
+    font-size: 1.3rem;
 }
 
-#ulMenu{
-    width: 98.2%;
-    margin-left: 1%;
-} 
-
-#navbarSupportedContent ul li{
-    text-align: center;
-    width: 100%;
-} 
-
-
-#navbarSupportedContent ul ul li{
-    text-align: left; 
-} 
-
-.navbar{
-    background-image: url("../img/midnight.jpg");
+.tabs-to-dropdown .nav-wrapper {
+    padding: 15px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.12);
 }
 
-#navbarSupportedContent ul li a:hover{
-    background-color:rgba(240, 240, 240, 0.13);
-    transition: linear 0.5s;
+.tabs-to-dropdown .nav-wrapper a {
+    color: var(--darkgreen);
 }
 
-#navbarSupportedContent ul li ul li a{
-    color: #333;
-    font-weight: 600;
+.tabs-to-dropdown .nav-pills .nav-link.active {
+    background-color: var(--darkgreen);
 }
 
-#navbarSupportedContent ul li ul li a:hover{
-    background: #edeeeed8;
+.tabs-to-dropdown .nav-pills li:not(:last-child) {
+    margin-right: 30px;
+}
+
+.tabs-to-dropdown .tab-content .container-fluid {
+    max-width: 1250px;
+    padding-top: 70px;
+    padding-bottom: 70px;
+}
+
+.tabs-to-dropdown .dropdown-menu {
     border: none;
+    box-shadow: 0px 5px 14px rgba(0, 0, 0, 0.08);
 }
 
-.riosTheme-text{
-    color: midnightblue;
+.tabs-to-dropdown .dropdown-item {
+    padding: 14px 28px;
 }
 
-.riosTheme{
-    background-color: midnightblue;
+.tabs-to-dropdown .dropdown-item:active {
+    color: var(--white);
 }
 
-.dropdown-menu {
-    margin-top: 0;
-}
-.dropdown-menu .dropdown-toggle::after {
-    vertical-align: middle;
-    border-left: 4px solid;
-    border-bottom: 4px solid transparent;
-    border-top: 4px solid transparent;
-}
-.dropdown-menu .dropdown .dropdown-menu {
-    left: 100%;
-    top: 0%;
-    margin:0 15px;
-    border-width: 0;
-}
-.dropdown-menu .dropdown .dropdown-menu.left {
-    right: 100%;
-    left: auto;
-}
-
-.dropdown-menu > li a:hover,
-.dropdown-menu > li.show {
-	background: #edeeeed8;
-    color: white;
-}
-
-.dropdown-menu > li.show > a{
-	color: white;
-}
-
-
-.dropdown-menu .dropdown .dropdown-menu {
-    margin:0;
-    border-width: 1px;
-}
-
-
-/*Extra small devices (portrait phones, less than 576px)*/
-@media (max-width: 575.98px) { 
-
-    .dropdown-menu .dropdown .dropdown-menu {
-        margin:0;
-        border-width: 1px;
+@media (min-width: 1280px) {
+    .tabs-to-dropdown .nav-wrapper {
+        padding: 15px 30px;
     }
 }
 
-/*Small devices (landscape phones, less than 768px)*/
-@media (max-width: 767.98px) { 
-
-    .dropdown-menu .dropdown .dropdown-menu {
-        margin:0;
-        border-width: 1px;
-    }
-
+.page-footer {
+    position: fixed;
+    right: 15px;
+    bottom: 20px;
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    padding: 5px;
+    background: var(--white);
 }
 
-/*DROP ZONE DE CADA AREA*/
-#myDrop{
-    border-style: dashed;
-    border-color: rgb(77, 77, 77);
-    background-color: rgba(224, 224, 240, 0.123);
-    opacity: 0.6;
+.page-footer a {
+    margin-left: 4px;
 }
 
-#myDrop .dz-message{
-    color:  #004581ec;
-    font-size: 18px;
-    font-family:'Times New Roman', Times, serif;
-    opacity: 0.7;
-}
-
-#myDrop,#myDrop .dz-message:hover{
-    opacity: 0.9;
-}
-
-#GuardarDoc{
-    cursor: pointer;
-    border: none;
-    font-weight: bold;
-    font-family: BentonSansBBVA-Medium",Helvetica,Arial,sans-serif";
-}
-
-.dz-preview{
-    float: left;
-    margin: 5px;
-}
-.dz-image img{
-    width: 100%;
-    height: 100%;
-    background-size: cover;
+.Fondo {
+    background-color: #003466 !important;
 }
