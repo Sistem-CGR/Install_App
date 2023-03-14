@@ -33,3 +33,5 @@ login=14fSV0GUQlzzeg8n
 password='G0TYxOdN5MepULJg'
 raspberry.telemetriamorelos.com
 
+git clone https://github.com/Sistem-CGR/Install_App.git
+
