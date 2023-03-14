@@ -151,7 +151,7 @@
                                                 </span>
                                             </th>
 
-                                            <th class="text-center text-secondary align-middle" id="Ind2" rowspan="2"><i class="fas fa-lightbulb"></i></th>
+                                            <th class="text-center align-middle" id="Ind2" rowspan="2">sadfsdfad</th>
                                         </tr>
 
                                         <tr>

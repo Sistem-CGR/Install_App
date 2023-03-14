@@ -2,8 +2,8 @@ const express = require("express");
 const app = express();
 //  mqtt
 const mqtt = require("mqtt");
-const URL_Client = "ws://www.sistemaintegralrios.com:8080/mqtt";
-//const URL_Client = "ws://192.168.2.83:8080/mqtt";
+//const URL_Client = "ws://www.sistemaintegralrios.com:8080/mqtt";
+const URL_Client = "ws://192.168.2.83:8080/mqtt";
 const Client_Id =
   "Raspberry_" + Math.floor(Math.random() * (10000 - 1 + 1) + 1);
 
@@ -49,7 +49,6 @@ Mqtt_Client.on("connect", function () {
   Mqtt_Client.subscribe("Raspberry/Raspberry_TST/#", function (err) {
     if (!err) {
       setInterval(() => {
-        //Mqtt_Client.publish("Raspberry/Raspberry_TST/In/Registros", "Hello 1");
         client.readCoils(6, 8).then((result) => {
           let Bobinas = result.response._body._valuesAsArray;
           let arr = {
@@ -60,35 +59,35 @@ Mqtt_Client.on("connect", function () {
             "Paro de emergencia": Bobinas[4] == 0 ? "OFF" : "ON",
             "Fallo de fase": Bobinas[5] == 0 ? "OFF" : "ON",
           };
-          /*
+          //console.log(arr);
           Mqtt_Client.publish(
             "Raspberry/Raspberry_TST/Out/Bobinas",
             JSON.stringify(arr)
-          );*/
+          );
         }, console.error);
+
         client.readHoldingRegisters(0, 16).then((result) => {
           //console.log(result.response._body);
           let Registros = result.response._body._values;
-
           let arr = {
             Hora: Registros[2] + ":" + Registros[1] + ":" + Registros[0],
-            Fehca: Registros[5] + "/" + Registros[4] + "/" + Registros[3],
+            Fecha: Registros[5] + "/" + Registros[4] + "/" + Registros[3],
             V12: Registros[6],
             V23: Registros[7],
             V31: Registros[8],
             Flujo: Registros[9],
-            Presión: Registros[10],
+            Presion: Registros[10],
             Frecuencia: Registros[11],
-            "Nivel dinamico": Registros[12],
+            Nivel: Registros[12],
             I1: Registros[13],
             I2: Registros[14],
             I3: Registros[15],
           };
-          /*
+          //console.log(arr);
           Mqtt_Client.publish(
             "Raspberry/Raspberry_TST/Out/Registros",
             JSON.stringify(arr)
-          );*/
+          );
         }, console.error);
       }, 1000);
     }
@@ -98,21 +97,29 @@ Mqtt_Client.on("connect", function () {
 Mqtt_Client.on("message", function (topic, message) {
   if (
     topic.includes("Raspberry/Raspberry_TST/Coil/On") ||
-    topic.includes("Raspberry/Raspberry_TST/Coil/Off")
+    topic.includes("Raspberry/Raspberry_TST/Coil/Off") ||
+    topic.includes("Raspberry/Raspberry_TST/Coil/Arranque") ||
+    topic.includes("Raspberry/Raspberry_TST/Coil/Paro")
   ) {
-    id = parseInt(message);
+    Datos = JSON.parse(message.toString());
     console.log(topic);
-    console.log(message);
-    console.log(id);
-    if (id != isNaN) {
+    console.log(Datos);
+    console.log(Datos.Bobina);
+    if (Datos.Bobina != isNaN) {
       switch (topic) {
         // Encendemos la bobina
         case "Raspberry/Raspberry_TST/Coil/On":
-          client.writeSingleCoil(id, true);
+          client.writeSingleCoil(Datos.Bobina, true);
           break;
         // Apagamos la bobina
         case "Raspberry/Raspberry_TST/Coil/Off":
-          client.writeSingleCoil(id, false);
+          client.writeSingleCoil(Datos.Bobina, false);
+          break;
+        case "Raspberry/Raspberry_TST/Coil/Arranque":
+          client.writeSingleCoil(Datos.Bobina, true);
+          break;
+        case "Raspberry/Raspberry_TST/Coil/Paro":
+          client.writeSingleCoil(Datos.Bobina, false);
           break;
       }
     }
