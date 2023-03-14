@@ -2,8 +2,8 @@ const express = require("express");
 const app = express();
 //  mqtt
 const mqtt = require("mqtt");
-//const URL_Client = "ws://www.sistemaintegralrios.com:8080/mqtt";
-const URL_Client = "ws://192.168.2.83:8080/mqtt";
+const URL_Client = "ws://www.sistemaintegralrios.com:8080/mqtt";
+//const URL_Client = "ws://192.168.2.83:8080/mqtt";
 const Client_Id =
   "Raspberry_" + Math.floor(Math.random() * (10000 - 1 + 1) + 1);
 
@@ -65,7 +65,9 @@ Mqtt_Client.on("connect", function () {
             JSON.stringify(arr)
           );
         }, console.error);
+      }, 5000);
 
+      setInterval(() => {
         client.readHoldingRegisters(0, 16).then((result) => {
           //console.log(result.response._body);
           let Registros = result.response._body._values;

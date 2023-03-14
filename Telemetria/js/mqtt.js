@@ -1,4 +1,5 @@
-const URL_Client = "ws://192.168.2.83:8080/mqtt";
+//const URL_Client = "ws://192.168.2.83:8080/mqtt";
+const URL_Client = "ws://www.sistemaintegralrios.com:8080/mqtt";
 const Client_Id = "User" + Math.floor(Math.random() * (10000 - 1 + 1) + 1);
 const Mqtt_Client = mqtt.connect(URL_Client);
 
@@ -29,6 +30,7 @@ Mqtt_Client.on("message", function (topic, message) {
       break;
     case "Raspberry/Raspberry_TST/Out/Bobinas":
       let Bobinas = JSON.parse(message.toString());
+
       Bobinas.Inicio == 1
         ? $("#Inicio").html(
             "<span class='text-success' type='button' onclick='Coil_Off(6,0)' ><i class='fas fa-toggle-on'></i></span>"
