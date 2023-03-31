@@ -1,0 +1,9 @@
+version: "4.17"
+services:
+    ddclient:
+        container_name: "google-domains-ddns"
+        image: "dragoncube/google-domains-ddns"
+        restart: always
+        volumes:
+          - "./config:/config"
+

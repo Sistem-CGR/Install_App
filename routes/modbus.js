@@ -54,7 +54,6 @@ clientMQTT.on("connect", function () {
   setInterval(() => {
     let status = socket.resume()._readableState.destroyed;
     status ? socket.connect(options) : "";
-
     clientMQTT.subscribe("Raspberry_STS/#", function (err) {
       if (!err) {
         // Publish a message to a topic
@@ -90,14 +89,14 @@ clientMQTT.on("connect", function () {
             let Registros = result.response._body._values;
             let arr = {
               Hora: Registros[2] + ":" + Registros[1] + ":" + Registros[0],
-              Fehca: Registros[5] + "/" + Registros[4] + "/" + Registros[3],
+              Fecha: Registros[5] + "/" + Registros[4] + "/" + Registros[3],
               V12: Registros[6],
               V23: Registros[7],
               V31: Registros[8],
               Flujo: Registros[9],
               Presión: Registros[10],
               Frecuencia: Registros[11],
-              "Nivel dinamico": Registros[12],
+              Nivel_dinamico: Registros[12],
               I1: Registros[13],
               I2: Registros[14],
               I3: Registros[15],
