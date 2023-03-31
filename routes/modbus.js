@@ -31,10 +31,10 @@ socket.connect(options);
 socket.on("error", (err) => console.log(err));
 
 const mqtt = require("mqtt");
-const mqttURL = "ws://192.168.2.83:8083/mqtt";
+//const mqttURL = "ws://192.168.2.83:8083/mqtt";
+const mqttURL = "ws://www.sistemaintegralrios.com:8083/mqtt";
 const Client_Id =
   "Raspberry_" + Math.floor(Math.random() * (10000 - 1 + 1) + 1);
-//const mqttURL = "ws://www.sistemaintegralrios.com:8083/mqtt";
 
 const clientMQTT = mqtt.connect(mqttURL, {
   clientId: Client_Id,
