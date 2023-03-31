@@ -10,7 +10,7 @@ const dotenv = require('dotenv')
 dotenv.config()
 
 // Conexión a la BD
-const { connection } = require('../config.db');
+//const { connection } = require('../config.db');
 
 
 // create a tcp modbus client
@@ -27,12 +27,12 @@ const options = {
 // Iniciamos la conexión con el plc
 socket.connect(options);
 
-
+socket.on('error', err =>  console.log(err));
 
 
 const mqtt = require('mqtt')
-const mqttURL = 'ws://192.168.2.83:8083/mqtt'
-//const mqttURL = 'ws://www.sistemaintegralrios.com/mqtt'
+//const mqttURL = 'ws://192.168.2.83:8083/mqtt'
+const mqttURL = 'ws://www.sistemaintegralrios.com/mqtt'
 
 const clientMQTT  = mqtt.connect(mqttURL)
 
@@ -43,6 +43,9 @@ const clientMQTT  = mqtt.connect(mqttURL)
 clientMQTT.on('connect', function () {
     // Subscribe to a topic
     setInterval(() => {
+        let status = socket.resume()._readableState.destroyed
+        status ? socket.connect(options) : "";
+
         clientMQTT.subscribe('/tst/#', function (err) {
             if (!err) {
                 // Publish a message to a topic
@@ -58,14 +61,17 @@ clientMQTT.on('connect', function () {
                     }
                     clientMQTT.publish('/tst/Bobinas', JSON.stringify(arr))
                     //clientMQTT.publish('/tst/Bobinas', JSON.stringify(Bobinas))
-                }, console.error);
+                }).catch(function () {
+                    console.error( "clientMQTT readCoils " + require('util').inspect(arguments, { depth: null}))
+                    clientMQTT.publish('/tst/Bobinas', "OFFLINE")
+                })
 
                 // Publish a message to a topic
                 clientPLC.readHoldingRegisters(0, 16).then(result => {
                     let Registros = result.response._body._values
                     let arr = {
-                        "Hora"  : Registros[2] + ':'+Registros[1]+':'+Registros[0],
-                        "Fehca" : Registros[5] + '/'+Registros[4]+'/'+Registros[3],
+                        "Hora"  : Registros[2] + ':' + Registros[1] + ':' + Registros[0],
+                        "Fehca" : Registros[5] + '/' + Registros[4] + '/' + Registros[3],
                         "V12"   : Registros[6],
                         "V23"   : Registros[7],
                         "V31"   : Registros[8],
@@ -79,7 +85,10 @@ clientMQTT.on('connect', function () {
                     }
                     clientMQTT.publish('/tst/Registros', JSON.stringify(arr))
                     //clientMQTT.publish('/tst/Registros', JSON.stringify(Registros))
-                }, console.error);
+                }).catch(function () {
+                    console.error( "clientMQTT readCoils " + require('util').inspect(arguments, { depth: null}))
+                    clientMQTT.publish('/tst/Registros', "OFFLINE")
+                })
             }
           })
     }, 1000);
@@ -90,6 +99,9 @@ clientMQTT.on('message', function (topic, message) {
     if (topic.includes('/tst/coilon') || topic.includes('/tst/coiloff')){
         id = parseInt(message)
         if (id != isNaN) {
+            let status = socket.resume()._readableState.destroyed
+            status ? socket.connect(options) : "";
+
             switch (topic){
                 // Encendemos la bobina
                 case '/tst/coilon': clientPLC.writeSingleCoil(id, true); break;
@@ -109,55 +121,93 @@ clientMQTT.on('message', function (topic, message) {
 
 // Fubnción pare lectura de bobinas
 let readCoils = ( req, res ) => {
+    let status = socket.resume()._readableState.destroyed
+    status ? socket.connect(options) : "";
+
     const { start, end } = req.body
     clientPLC.readCoils(start, end).then(result => {
         let Bobinas = result.response._body._valuesAsArray
         res.status(200).json(Bobinas)
-    }, console.error);
+    }).catch(function () {
+        console.error( "readCoils " + require('util').inspect(arguments, { depth: null}))
+        res.status(202).json(false)
+    })
 }
 
 // Fubnción pare lectura de bobinas
 let readHoldingRegisters = ( req, res ) => {
+    let status = socket.resume()._readableState.destroyed
+    status ? socket.connect(options) : "";
+
     const { start, end } = req.body
     clientPLC.readHoldingRegisters(start, end).then(result => {
         let Registros = result.response._body._valuesAsArray
         res.status(200).json(Registros)
-    }, console.error);
+    }).catch(function () {
+        console.error( "readHoldingRegisters " + require('util').inspect(arguments, { depth: null}))
+        res.status(202).json(false)
+    })
 }
 
 // Función para encedido de bobinas
 let coilON = (req, res) => {
+    let status = socket.resume()._readableState.destroyed
+    status ? socket.connect(options) : "";
+
     const id = req.body.id == undefined ? req.params.id : req.body.id;
 
     clientPLC.writeSingleCoil(id, true).then(result => {
         res.status(200).json(result.response._body)
-    }).catch( () => {
-      console.error(arguments)
+    }).catch(function () {
+        console.error( "coilON " + require('util').inspect(arguments, { depth: null}))
+        res.status(202).json(false)
     })
 }
 
 // Función para apagado de bobinas
 let coilOFF = (req, res) => {
+    let status = socket.resume()._readableState.destroyed
+    status ? socket.connect(options) : "";
     const id = req.body.id == undefined ? req.params.id : req.body.id;
 
     clientPLC.writeSingleCoil(id, false).then(result => {
         res.status(200).json(result.response._body)
-    }).catch( () => {
-      console.error(arguments)
+    }).catch(function () {
+        console.error( "coilOFF " + require('util').inspect(arguments, { depth: null}))
+        res.status(202).json(false)
     })
 }
 
 
 // Función para escritura de bobinas
 let writeSingleRegister = (req, res) => {
+    let status = socket.resume()._readableState.destroyed
+    status ? socket.connect(options) : "";
     const { id, value } = req.body
 
     clientPLC.writeSingleRegister(id, value).then(result => {
         res.status(200).json(result.response._body)
-    }).catch( () => {
-      console.error(arguments)
+    }).catch(function () {
+        console.error( "writeSingleRegister " + require('util').inspect(arguments, { depth: null}))
+        res.status(202).json(false)
     })
 }
+
+
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------------------\
+|                                                                            CONSULTAS A LA BD                                                                          |
+\----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+// Consultas a la base de datos
+/*
+let data = (req, res) => {
+    connection.query("SELECT * FROM Dispositivo_Rasp",
+        ( err, result ) => {
+            if(err)
+                throw err
+            res.status(200).json(result)
+        })
+}
+*/
 
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------------------\
 |                                                                 PETICIONES A LA API POR METODO GET Y POST                                                             |
@@ -187,20 +237,5 @@ app.post('/', (req, res) => {res.json({ mensaje: 'Api jsmodbus metodo POST :)' }
     app.get('/coiloff/:id', coilOFF)
     app.post('/coiloff', coilOFF)    // Parametros { id }
 
-
-/*----------------------------------------------------------------------------------------------------------------------------------------------------------------------\
-|                                                                            CONSULTAS A LA BD                                                                          |
-\----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-    // Consultas a la base de datos
-/*
-    let data = (req, res) => {
-        connection.query("SELECT * FROM test",
-            ( err, result ) => {
-                if(err)
-                    throw err
-                res.status(200).json(result)
-            })
-    }
-*/
 
 module.exports = app
