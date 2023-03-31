@@ -1,0 +1,19 @@
+a {
+    text-decoration: none;
+}
+
+.login-page {
+    width: 100%;
+    height: 100vh;
+    display: inline-block;
+    display: flex;
+    align-items: center;
+}
+
+.form-right i {
+    font-size: 100px;
+}
+
+.Img_Fondo {
+    background-image: url("../img/Fondo.jpg") !important;
+}
