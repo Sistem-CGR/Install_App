@@ -31,10 +31,19 @@ socket.connect(options);
 socket.on("error", (err) => console.log(err));
 
 const mqtt = require("mqtt");
-//const mqttURL = 'ws://192.168.2.83:8083/mqtt'
-const mqttURL = "ws://www.sistemaintegralrios.com/mqtt";
+const mqttURL = "ws://192.168.2.83:8083/mqtt";
+const Client_Id =
+  "Raspberry_" + Math.floor(Math.random() * (10000 - 1 + 1) + 1);
+//const mqttURL = "ws://www.sistemaintegralrios.com:8083/mqtt";
 
-const clientMQTT = mqtt.connect(mqttURL);
+const clientMQTT = mqtt.connect(mqttURL, {
+  clientId: Client_Id,
+  clean: true,
+  connectTimeout: 4000,
+  username: "Raspberry",
+  password: "Silver2670",
+  reconnectPeriod: 1000,
+});
 
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------------------\
 |                                                                               MQTT BROQUER                                                                            |
@@ -46,7 +55,7 @@ clientMQTT.on("connect", function () {
     let status = socket.resume()._readableState.destroyed;
     status ? socket.connect(options) : "";
 
-    clientMQTT.subscribe("tst/#", function (err) {
+    clientMQTT.subscribe("Raspberry_STS/#", function (err) {
       if (!err) {
         // Publish a message to a topic
         clientPLC
@@ -61,15 +70,17 @@ clientMQTT.on("connect", function () {
               "Paro de emergencia": Bobinas[4] == 0 ? "OFF" : "ON",
               "Fallo de fase": Bobinas[5] == 0 ? "OFF" : "ON",
             };
-            clientMQTT.publish("tst/Bobinas", JSON.stringify(arr));
-            //clientMQTT.publish('/tst/Bobinas', JSON.stringify(Bobinas))
+            clientMQTT.publish(
+              "Raspberry_STS/Bobinas/Valores",
+              JSON.stringify(arr)
+            );
           })
           .catch(function () {
             console.error(
               "clientMQTT readCoils " +
                 require("util").inspect(arguments, { depth: null })
             );
-            clientMQTT.publish("tst/Bobinas", "OFFLINE");
+            clientMQTT.publish("Raspberry_STS/PLC/OFFLINE", "OFFLINE");
           });
 
         // Publish a message to a topic
@@ -91,15 +102,17 @@ clientMQTT.on("connect", function () {
               I2: Registros[14],
               I3: Registros[15],
             };
-            clientMQTT.publish("tst/Registros", JSON.stringify(arr));
-            //clientMQTT.publish('/tst/Registros', JSON.stringify(Registros))
+            clientMQTT.publish(
+              "Raspberry_STS/Registros/Valores",
+              JSON.stringify(arr)
+            );
           })
           .catch(function () {
             console.error(
               "clientMQTT readCoils " +
                 require("util").inspect(arguments, { depth: null })
             );
-            clientMQTT.publish("tst/Registros", "OFFLINE");
+            clientMQTT.publish("Raspberry_STS/PLC/OFFLINE", "OFFLINE");
           });
       }
     });
@@ -108,7 +121,10 @@ clientMQTT.on("connect", function () {
 
 // Receive messages
 clientMQTT.on("message", function (topic, message) {
-  if (topic.includes("tst/coilon") || topic.includes("/tst/coiloff")) {
+  if (
+    topic.includes("Raspberry_STS/coilon") ||
+    topic.includes("/Raspberry_STS/coiloff")
+  ) {
     id = parseInt(message);
     if (id != isNaN) {
       let status = socket.resume()._readableState.destroyed;
@@ -116,11 +132,11 @@ clientMQTT.on("message", function (topic, message) {
 
       switch (topic) {
         // Encendemos la bobina
-        case "tst/coilon":
+        case "Raspberry_STS/coilon":
           clientPLC.writeSingleCoil(id, true);
           break;
         // Apagamos la bobina
-        case "tst/coiloff":
+        case "Raspberry_STS/coiloff":
           clientPLC.writeSingleCoil(id, false);
           break;
       }
