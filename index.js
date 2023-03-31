@@ -9,7 +9,7 @@ app.use(express.urlencoded( {extended: true} ))
 // Cargamos el archivo de rutas
 app.use(require('./routes/modbus'))
 /*
-app.listen(process.env.PORT||8083, () => {
+app.listen(process.env.PORT||8080, () => {
     console.log("Ejecutando dervidro en localhost:8080")
 })*/
 

@@ -5,25 +5,19 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
-    "dev": "nodemon --watch index.js"
+    "start": "forever index.js"
   },
   "author": "Fabian Ramos Huanico",
   "license": "ISC",
   "devDependencies": {
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-<<<<<<< HEAD:package.json
+    "forever": "^4.0.3",
     "mysql": "^2.18.1"
-=======
-    "mysql": "^2.18.1",
-    "nodemon": "^2.0.20"
->>>>>>> 7fdf849ee60260a32ca197bf81484c7c3dc5262e:app/package.json
   },
   "dependencies": {
     "cors": "^2.8.5",
     "jsmodbus": "^4.0.6",
-    "mqtt": "^4.3.7",
-    "node-windows": "^1.0.0-beta.8"
+    "mqtt": "^4.3.7"
   }
 }
