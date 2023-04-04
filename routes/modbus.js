@@ -20,11 +20,7 @@ const net = require("net");
 
 const socket = new net.Socket();
 const clientPLC = new Modbus.client.TCP(socket);
-const options = {
-  host: "192.168.1.50",
-  port: 502,
-};
-
+const options = { host: "192.168.1.50", port: 502 };
 // Iniciamos la conexión con el plc
 socket.connect(options);
 
@@ -69,12 +65,14 @@ clientMQTT.on("connect", function () {
               "Paro de emergencia": Bobinas[4] == 0 ? "OFF" : "ON",
               "Fallo de fase": Bobinas[5] == 0 ? "OFF" : "ON",
             };
+            console.log("Envio de datos");
             clientMQTT.publish(
               "Raspberry_STS/Bobinas/Valores",
               JSON.stringify(arr)
             );
           })
           .catch(function () {
+            console.log("Error al enviar datos");
             console.error(
               "clientMQTT readCoils " +
                 require("util").inspect(arguments, { depth: null })
