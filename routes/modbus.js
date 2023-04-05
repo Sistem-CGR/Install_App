@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 
 const cors = require("cors");
+const colors = require("colors");
 app.use(
   cors({
     origin: "*",
@@ -20,25 +21,30 @@ const net = require("net");
 
 const socket = new net.Socket();
 const clientPLC = new Modbus.client.TCP(socket);
-const options = { host: "192.168.1.50", port: 502 };
+const options = {
+  host: "192.168.1.50",
+  port: 502,
+};
 // Iniciamos la conexión con el plc
 socket.connect(options);
 
 socket.on("error", (err) => console.log(err));
 
 const mqtt = require("mqtt");
-//const mqttURL = "ws://192.168.2.83:8083/mqtt";
-const mqttURL = "ws://www.sistemaintegralrios.com:8083/mqtt";
-const Client_Id =
-  "Raspberry_" + Math.floor(Math.random() * (10000 - 1 + 1) + 1);
+const { log } = require("console");
+//const mqttURL = "ws://192.168.2.83:8080/mqtt";
+const mqttURL = "ws://www.sistemaintegralrios.com:8080/mqtt";
+const Client_Id ="Raspberry_" + Math.floor(Math.random() * (10000 - 1 + 1) + 1);
 
 const clientMQTT = mqtt.connect(mqttURL, {
   clientId: Client_Id,
-  clean: true,
-  connectTimeout: 4000,
+  clean: false,
+  keepalive:3600,
+  protocolVersion:5,
+  connectTimeout: 1000,
+  reconnectPeriod: 1000,
   username: "Raspberry",
   password: "Silver2670",
-  reconnectPeriod: 1000,
 });
 
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------------------\
@@ -65,19 +71,23 @@ clientMQTT.on("connect", function () {
               "Paro de emergencia": Bobinas[4] == 0 ? "OFF" : "ON",
               "Fallo de fase": Bobinas[5] == 0 ? "OFF" : "ON",
             };
-            console.log("Envio de datos");
-            clientMQTT.publish(
-              "Raspberry_STS/Bobinas/Valores",
-              JSON.stringify(arr)
-            );
+            clientMQTT.publish("Raspberry_STS/Bobinas/Valores",JSON.stringify(arr),{qos:0,retain:false},function(error){
+              if(error){
+                console.log("Error al publicar Raspberry_STS/Bobinas/Valores".red)
+              }else{
+                console.log("Publicado Raspberry_STS/Bobinas/Valores".green)
+              }
+            });
           })
           .catch(function () {
-            console.log("Error al enviar datos");
-            console.error(
-              "clientMQTT readCoils " +
-                require("util").inspect(arguments, { depth: null })
-            );
-            clientMQTT.publish("Raspberry_STS/PLC/OFFLINE", "OFFLINE");
+            console.error("clientMQTT readCoils " +require("util").inspect(arguments, { depth: null }));
+            clientMQTT.publish("Raspberry_STS/PLC/OFFLINE","OFFLINE",{qos:0,retain:false},function(error){
+              if(error){
+                console.log("Error al publicar a Raspberry_STS/PLC/OFFLINE".red)
+              }else{
+                console.log("Publicado Raspberry_STS/PLC/OFFLINE".green)
+              }
+            });
           });
 
         // Publish a message to a topic
@@ -99,18 +109,29 @@ clientMQTT.on("connect", function () {
               I2: Registros[14],
               I3: Registros[15],
             };
-            clientMQTT.publish(
-              "Raspberry_STS/Registros/Valores",
-              JSON.stringify(arr)
-            );
+            clientMQTT.publish("Raspberry_STS/Registros/Valores",JSON.stringify(arr),{qos:0,retain:false},function(error){
+              if(error){
+                console.log("Error al publicar Raspberry_STS/Registros/Valores".red)
+              }else{
+                console.log("Publicado Raspberry_STS/Registros/Valores".green)
+              }
+            });
           })
           .catch(function () {
             console.error(
               "clientMQTT readCoils " +
                 require("util").inspect(arguments, { depth: null })
             );
-            clientMQTT.publish("Raspberry_STS/PLC/OFFLINE", "OFFLINE");
+            clientMQTT.publish("Raspberry_STS/PLC/OFFLINE","OFFLINE",{qos:0,retain:false},function(error){
+              if(error){
+                console.log("Error al publicar Raspberry_STS/PLC/OFFLINE".red)
+              }else{
+                console.log("Publicado Raspberry_STS/PLC/OFFLINE".green)
+              }
+            });
           });
+      } else {
+        console.log(err);
       }
     });
   }, 1000);
@@ -139,6 +160,13 @@ clientMQTT.on("message", function (topic, message) {
       }
     }
   }
+});
+
+clientMQTT.on("reconnect", function () {
+  console.log("Reconectando...........".yellow);
+});
+clientMQTT.on("error", function () {
+  console.log("ERROR AL CONECTAR".red);
 });
 
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------------------\
